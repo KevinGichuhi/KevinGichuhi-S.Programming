@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// global balance
+int currentbalance = 10000;
+
+void login() {
+    int pin = 1234;
+    int userpin;
+    int attempts = 3;
+    int accessgranted = 0;
+
+    do {
+        printf("Enter pin: ");
+        scanf("%d", &userpin);
+
+        if (userpin == pin) {
+            printf("Access granted.\n");
+            accessgranted = 1;
+            break;
+        } else {
+            attempts--;
+            if (attempts > 0) {
+                printf("Incorrect pin. You have %d attempts remaining.\n", attempts);
+            } else {
+                printf("Access denied. You have no attempts left.\n");
+            }
+        }
+
+    } while (attempts > 0);
+
+    if (!accessgranted) {
+        printf("Too many attempts!\n");
+        exit(0);
+    }
+}
+
+void balanceinquiry() {
+    printf("Your current balance is %d\n", currentbalance);
+}
+
+void deposit() {
+    int amount;
+    printf("Enter amount to deposit: ");
+    scanf("%d", &amount);
+
+    currentbalance += amount;
+    printf("Deposit successful. New balance: %d\n", currentbalance);
+}
+
+void withdraw() {
+    int amount;
+    printf("Enter amount to withdraw: ");
+    scanf("%d", &amount);
+
+    if (amount > currentbalance) {
+        printf("Insufficient balance!\n");
+    } else {
+        currentbalance -= amount;
+        printf("Withdrawal successful. New balance: %d\n", currentbalance);
+    }
+}
+
+void exitProgram() {
+    printf("You are exiting...\n");
+}
+
+int main() {
+    login();
+
+    int option;
+    do {
+        printf("\nWelcome. Please pick an option\n"
+               "1. Balance inquiry\n"
+               "2. Deposit\n"
+               "3. Withdraw\n"
+               "4. Exit\n"
+        );
+
+        scanf("%d", &option);
+
+        switch (option) {
+            case 1:
+                balanceinquiry();
+                break;
+            case 2:
+                deposit();
+                break;
+            case 3:
+                withdraw();
+                break;
+            case 4:
+                exitProgram();
+                break;
+            default:
+                printf("Invalid option.\n");
+                break;
+        }
+    } while (option != 4);
+
+    return 0;
+}
